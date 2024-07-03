@@ -9,6 +9,9 @@ interface Document {
 }
 
 interface Response {
+    page: ReactNode;
+    source: ReactNode;
+    page_content: ReactNode;
     query: string;
     result: string;
     source_documents: Document[];
