@@ -1,20 +1,11 @@
 import React from 'react';
 
-interface Document {
-    page_content: string;
-    metadata: {
-        source: string;
-    };
-    type: string;
-}
-
 interface Response {
-    page: ReactNode;
-    source: ReactNode;
-    page_content: ReactNode;
+    page: string;
+    source: string;
+    page_content: string;
     query: string;
     result: string;
-    source_documents: Document[];
 }
 
 interface BubbleAnswerProps {
