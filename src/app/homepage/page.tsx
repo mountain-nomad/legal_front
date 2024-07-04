@@ -1,8 +1,10 @@
 import Link from "next/link"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import Navbar from "../components/navbar"
+import Search from "../components/serch"
 
-export default function Home() {
+export default function Component() {
   return (
     <div className="flex flex-col min-h-[100dvh]">
       <main className="flex-1">
@@ -34,9 +36,6 @@ export default function Home() {
                     Стать бета-тестером
                   </Link>
                 </div>
-              </div>
-              <div className="flex items-center justify-center lg:justify-end">
-                
               </div>
             </div>
           </div>
@@ -93,7 +92,7 @@ export default function Home() {
                 </div>
                 <div className="flex items-start gap-4">
                   <div>
-                    <h3 className="text-xl font-bold">Повышение точности</h3>
+                    <h3 className="text-xl font-bold">Improve Accuracy</h3>
                     <p className="text-muted-foreground">
                     Передовая аналитика и возможности машинного обучения Zanymda.ai помогут вам выявить потенциальные риски и обеспечить высочайший уровень точности в работе.
                     </p>
@@ -101,7 +100,7 @@ export default function Home() {
                 </div>
                 <div className="flex items-start gap-4">
                   <div>
-                    <h3 className="text-xl font-bold">Сосредоточьтесь на главном</h3>
+                    <h3 className="text-xl font-bold">Focus on What Matters</h3>
                     <p className="text-muted-foreground">
                     Автоматизируя рутинные задачи, Zanymda.ai высвобождает ваше время и умственную энергию, позволяя вам сосредоточиться на самых сложных и важных юридических вопросах.
                     </p>
@@ -119,7 +118,7 @@ export default function Home() {
                 Исследуйте возможности Zanymda.ai
                 </h2>
                 <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                Запишитесь на бесплатную консультацию и станьте чатью бэта теста Zanymda.ai
+                Запишитесь на бесплатную пробную версию и узнайте, как Zanymda.ai может преобразить вашу юридическую практику.
                 </p>
               </div>
               <form className="flex gap-2">
