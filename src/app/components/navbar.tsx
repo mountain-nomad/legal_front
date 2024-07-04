@@ -26,7 +26,7 @@ const Navbar = () => {
     );
 };
 
-function LockIcon(props) {
+function LockIcon(props: any) {
     return (
       <svg
         {...props}
