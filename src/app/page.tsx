@@ -145,7 +145,7 @@ export default function Home() {
   )
 }
 
-function BriefcaseIcon(props) {
+function BriefcaseIcon(props: any) {
   return (
     <svg
       {...props}
