@@ -10,16 +10,14 @@ const Navbar = () => {
         </Link>
         <nav className="ml-auto flex gap-4 sm:gap-6">
           <Link href="#" className="text-sm font-medium hover:underline underline-offset-4" prefetch={false}>
-            Features
+            Преймущества
+          </Link>
+          
+          <Link href="#" className="text-sm font-medium hover:underline underline-offset-4" prefetch={false}>
+            О проекте
           </Link>
           <Link href="#" className="text-sm font-medium hover:underline underline-offset-4" prefetch={false}>
-            Pricing
-          </Link>
-          <Link href="#" className="text-sm font-medium hover:underline underline-offset-4" prefetch={false}>
-            About
-          </Link>
-          <Link href="#" className="text-sm font-medium hover:underline underline-offset-4" prefetch={false}>
-            Contact
+            Связаться с нами
           </Link>
         </nav>
       </header>

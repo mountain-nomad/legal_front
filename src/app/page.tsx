@@ -1,8 +1,19 @@
+"use client"
+
 import Link from "next/link"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { useState } from "react";
 
 export default function Home() {
+  const [email, setEmail] = useState('');
+
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
+    console.log(email);
+    // Add any additional actions you want to perform with the email
+  };
+  
   return (
     <div className="flex flex-col min-h-[100dvh]">
       <main className="flex-1">
@@ -122,10 +133,16 @@ export default function Home() {
                 Запишитесь на бесплатную консультацию и станьте чатью бэта теста Zanymda.ai
                 </p>
               </div>
-              <form className="flex gap-2">
-                <Input type="email" placeholder="Enter your email" className="max-w-lg flex-1" />
-                <Button type="submit">Попробовать бесплатно</Button>
-              </form>
+              <form onSubmit={handleSubmit} className="flex gap-2 w-full max-w-md">
+                  <Input
+                    type="email"
+                    placeholder="Введите ваш email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="flex-grow"
+                  />
+                  <Button type="submit">Попробовать бесплатно</Button>
+                </form>
             </div>
           </div>
         </section>
