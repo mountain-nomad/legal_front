@@ -26,7 +26,7 @@ const Navbar = () => {
     );
 };
 
-function LockIcon(props: React.JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>) {
+function LockIcon(props) {
     return (
       <svg
         {...props}

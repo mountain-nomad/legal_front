@@ -186,7 +186,7 @@ function CheckIcon(props) {
 }
 
 
-function FileIcon(props) {
+function FileIcon(props: any) {
   return (
     <svg
       {...props}
@@ -207,7 +207,7 @@ function FileIcon(props) {
 }
 
 
-function FocusIcon(props) {
+function FocusIcon(props: any) {
   return (
     <svg
       {...props}
@@ -231,7 +231,7 @@ function FocusIcon(props) {
 }
 
 
-function LightbulbIcon(props) {
+function LightbulbIcon(props: any) {
   return (
     <svg
       {...props}
@@ -253,7 +253,7 @@ function LightbulbIcon(props) {
 }
 
 
-function LockIcon(props) {
+function LockIcon(props: any) {
   return (
     <svg
       {...props}
@@ -274,7 +274,7 @@ function LockIcon(props) {
 }
 
 
-function TimerIcon(props) {
+function TimerIcon(props: any) {
   return (
     <svg
       {...props}
