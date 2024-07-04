@@ -14,7 +14,7 @@ interface BubbleAnswerProps {
 
 const BubbleAnswer: React.FC<BubbleAnswerProps> = ({ response }) => {
     return (
-        <div className="bg-gray-800 text-white shadow-md rounded-md p-6 mt-4  mx-auto">
+        <div className="bg-gray-800 text-white shadow-md rounded-md p-6 mt-4 mx-auto max-w-4xl">
             <h2 className="text-xl font-semibold mb-4">Результат запроса</h2>
             <p className="mb-4"><strong>Ответ:</strong> {response.result}</p>
             <h3 className="text-lg font-semibold mb-2">Документы:</h3>

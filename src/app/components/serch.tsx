@@ -29,6 +29,14 @@ const Search: React.FC = () => {
         }
     };
 
+    const handleTextareaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setQuery(event.target.value);
+        if (textareaRef.current) {
+            textareaRef.current.style.height = 'auto';
+            textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+        }
+    };
+
     useEffect(() => {
         if (textareaRef.current) {
             textareaRef.current.style.height = 'auto';
@@ -39,12 +47,13 @@ const Search: React.FC = () => {
     return (
         <div className="flex flex-col items-center min-h-screen">
             <form onSubmit={handleSubmit} className="w-full max-w-md p-4 bg-gray-800 shadow-md rounded-md flex items-center">
-                <input
-                    type="text"
+                <textarea
+                    ref={textareaRef}
                     value={query}
-                    onChange={(e) => setQuery(e.target.value)}
+                    onChange={handleTextareaChange}
                     placeholder="Поиск по контексту..."
-                    className="flex-grow p-2 bg-transparent text-white placeholder-gray-400 border-none focus:outline-none"
+                    className="flex-grow p-2 bg-transparent text-white placeholder-gray-400 border-none focus:outline-none resize-none overflow-hidden"
+                    rows={1}
                 />
                 {!isLoading && (
                     <button

@@ -3,7 +3,7 @@ import Search from "../components/serch"
 export default function Component() {
   return (
     <div className="flex flex-col items-center justify-center min-h-[100dvh] bg-background">
-      <div className="max-w-2xl w-full px-4 sm:px-6 lg:px-8">
+      <div className="max-w-5xl w-full px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center space-y-6">
           <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">Search</h1>
           <div className="relative w-full">

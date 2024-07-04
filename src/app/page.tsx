@@ -1,32 +1,54 @@
-"use client"
+"use client"; // Ensure this is at the top
 
-import Link from "next/link"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { useState } from "react";
+import Link from "next/link";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { useState, FormEvent } from "react";
 
 export default function Home() {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState<string>('');
 
-  const handleSubmit = (event: any) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
+    console.log("Form submitted");
     console.log(email);
-    // Add any additional actions you want to perform with the email
+
+    // Send email to the server-side log
+    try {
+      const response = await fetch('./api/logEmail', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to log email');
+      }
+
+      const result = await response.json();
+      console.log(result.message);
+    } catch (error) {
+      console.error('Error logging email:', error);
+    }
   };
-  
   return (
     <div className="flex flex-col min-h-[100dvh]">
       <main className="flex-1">
         <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
           <div className="container px-4 md:px-6">
-            <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
+            <div className="flex items-center justify-center lg:justify-end">
               <div className="flex flex-col justify-center space-y-4">
                 <div className="space-y-2">
                   <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                    Повысьте производительность труда юристов с помощью Zanymda.ai
+                    Ускоряем работу адвокатов с помощью
+                  </h1>
+                  <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 bg-clip-text text-transparent">
+                    Zanymda.ai
                   </h1>
                   <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                    Zanymda.ai - это помощник на базе искусственного интеллекта, который помогает юристам экономить время, повышать точность и концентрироваться на важных задачах.
+                    Zanymda.ai - это помощник на базе искусственного интеллекта, который помогает юристам экономить время на поиске похожих по смыслу дел, повышать точность и концентрироваться на важных задачах.
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
@@ -133,7 +155,8 @@ export default function Home() {
                 Запишитесь на бесплатную консультацию и станьте чатью бэта теста Zanymda.ai
                 </p>
               </div>
-              <form onSubmit={handleSubmit} className="flex gap-2 w-full max-w-md">
+              <div className="flex items-center justify-center lg:justify-end">
+                <form onSubmit={handleSubmit} className="flex gap-2 w-full max-w-md">
                   <Input
                     type="email"
                     placeholder="Введите ваш email"
@@ -143,6 +166,7 @@ export default function Home() {
                   />
                   <Button type="submit">Попробовать бесплатно</Button>
                 </form>
+              </div>
             </div>
           </div>
         </section>
