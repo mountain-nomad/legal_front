@@ -66,6 +66,13 @@ export default function Home() {
                   >
                     Стать бета-тестером
                   </Link>
+                  <Link
+                    href="/search_for_non_prof"
+                    className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-8 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                    prefetch={false}
+                  >
+                    Попробовать версию для физ. лиц
+                  </Link>
                 </div>
               </div>
               <div className="flex items-center justify-center lg:justify-end">
