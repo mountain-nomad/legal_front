@@ -25,7 +25,6 @@ const BubbleAnswer: React.FC<BubbleAnswerProps> = ({ response }) => {
                 </div>
             </div>
         </div>
-
     );
 };
 

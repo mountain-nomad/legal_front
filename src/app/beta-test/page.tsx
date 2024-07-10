@@ -1,7 +1,43 @@
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+"use client"
+
+import { useState, useEffect } from 'react';
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export default function Component() {
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+
+  const handleSubmit = async (event:any) => {
+    event.preventDefault();
+    try {
+      const response = await fetch('https://legalapi-production.up.railway.app/become_beta_tester', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+      if (data.status === 'success') {
+        setMessage('Спасибо за ваш вклад');
+        setEmail('');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (message) {
+      const timer = setTimeout(() => {
+        setMessage('');
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [message]);
+
   return (
     <div className="w-full">
       <section className="w-full py-12 md:py-12 lg:py-16 xl:py-24 bg-gradient-to-r from-[#ffffff] to-[#f1f1f1]">
@@ -12,10 +48,12 @@ export default function Component() {
               Присоединяйтесь к нашей эксклюзивной бета-программе и первыми получите доступ к pro-версии
             </p>
             <div className="flex justify-center">
-              <form className="w-full max-w-md flex gap-2">
+              <form onSubmit={handleSubmit} className="w-full max-w-md flex gap-2">
                 <Input
                   type="email"
                   placeholder="Введите ваш email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="flex-1 bg-white text-gray-900 placeholder:text-gray-500"
                 />
                 <Button type="submit" className="bg-[#ffffff] text-gray-900 hover:bg-[#f1f1f1]">
@@ -23,6 +61,11 @@ export default function Component() {
                 </Button>
               </form>
             </div>
+            {message && (
+              <div className="mt-4 p-4 bg-blue-100 text-blue-600 rounded">
+                {message}
+              </div>
+            )}
             <p className="text-lg text-gray-600 md:text-xl">
               Осталось меньше 20 мест
             </p>
@@ -58,5 +101,5 @@ export default function Component() {
         </div>
       </section>
     </div>
-  )
+  );
 }
