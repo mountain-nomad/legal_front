@@ -45,34 +45,42 @@ const Search: React.FC = () => {
     }, [query]);
 
     return (
-        <div className="flex flex-col items-center min-h-screen">
-            <form onSubmit={handleSubmit} className="w-full max-w-md p-4 bg-gray-800 shadow-md rounded-md flex items-center">
-                <textarea
-                    ref={textareaRef}
-                    value={query}
-                    onChange={handleTextareaChange}
-                    placeholder="Поиск по контексту..."
-                    className="flex-grow p-2 bg-transparent text-white placeholder-gray-400 border-none focus:outline-none resize-none overflow-hidden"
-                    rows={1}
-                />
-                {!isLoading && (
-                    <button
-                        type="submit"
-                        className="ml-2 p-2 bg-gray-700 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-                    >
-                        Найти
-                    </button>
-                )}
+        <div className="flex flex-col items-center min-h-screen bg-white-100">
+            <form
+            onSubmit={handleSubmit}
+            className="w-full max-w-md p-4 bg-gray-300 shadow-md rounded-md flex items-center"
+            >
+            <textarea
+                ref={textareaRef}
+                value={query}
+                onChange={handleTextareaChange}
+                placeholder="Поиск по контексту..."
+                className="flex-grow p-2 bg-transparent text-black placeholder-gray-600 border-none focus:outline-none resize-none overflow-hidden"
+                rows={1}
+            />
+            {!isLoading && (
+                <button
+                type="submit"
+                className="ml-2 p-2 bg-gray-400 text-black rounded-md hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                >
+                Найти
+                </button>
+            )}
             </form>
 
-            <div className='w-full flex justify-center mt-4 px-4'>
-                {isLoading ? <LoadingSpinner /> : response && (
-                    <div className="w-full max-w-6xl">
-                        <BubbleAnswer response={response} />
-                    </div>
-                )}
+            <div className="w-full flex justify-center mt-4 px-4">
+            {isLoading ? (
+                <LoadingSpinner />
+            ) : (
+                response && (
+                <div className="w-full max-w-6xl">
+                    <BubbleAnswer response={response} />
+                </div>
+                )
+            )}
             </div>
         </div>
+
     );
 };
 

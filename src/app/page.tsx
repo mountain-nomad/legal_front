@@ -36,51 +36,77 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-[100dvh]">
       <main className="flex-1">
-        <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
+      <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
           <div className="container px-4 md:px-6">
-            <div className="flex items-center justify-center lg:justify-end">
+            <div className="flex items-center justify-center">
               <div className="flex flex-col justify-center space-y-4">
-                <div className="space-y-2">
-                  <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                    Ускоряем работу адвокатов с помощью
-                  </h1>
+                <div className="space-y-2 text-center">
                   <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 bg-clip-text text-transparent">
-                    Zanymda.ai
+                    Zanymda Ask
                   </h1>
-                  <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                    Zanymda.ai - это помощник на базе искусственного интеллекта, который помогает юристам экономить время на поиске похожих по смыслу дел, повышать точность и концентрироваться на важных задачах.
+                  <h3 className="text-2xl font-bold tracking-tighter sm:text-3xl xl:text-4xl/none">
+                    Ответы на любые вопросы
+                  </h3>
+                  <p className="max-w-[600px] mx-auto text-muted-foreground md:text-xl">
+                    Zanymda Ask - это помощник на базе искусственного интеллекта, который помогает гражданам разобраться в законах РК.
                   </p>
                 </div>
-                <div className="flex flex-col gap-2 min-[400px]:flex-row">
+                <div className="flex flex-col gap-2 min-[400px]:flex-row justify-center">
                   <Link
-                    href="/search"
+                    href="/search_for_non_prof"
                     className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                     prefetch={false}
                   >
-                    Попробовать бесплатно
+                    Zanymda ask
                   </Link>
                   <Link
-                    href="#"
+                    href="/beta-test"
                     className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-8 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                     prefetch={false}
                   >
                     Стать бета-тестером
                   </Link>
-                  <Link
-                    href="/search_for_non_prof"
-                    className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-8 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-                    prefetch={false}
-                  >
-                    Попробовать версию для физ. лиц
-                  </Link>
                 </div>
-              </div>
-              <div className="flex items-center justify-center lg:justify-end">
-                
               </div>
             </div>
           </div>
         </section>
+        <section className="w-full py-6 md:py-12 lg:py-16 xl:py-24">
+          <div className="container px-4 md:px-6">
+            <div className="flex items-center justify-center">
+              <div className="flex flex-col justify-center space-y-4">
+                <div className="space-y-2 text-center">
+                  <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none bg-gradient-to-r from-[#1E3A8A] via-[#3B82F6] to-[#BFDBFE] bg-clip-text text-transparent">
+                    Zanymda Search
+                  </h1>
+                  <h1 className="text-2xl font-bold tracking-tighter sm:text-3xl xl:text-4xl/none">
+                    Ищем прецеденты в верховном суде
+                  </h1>
+                  <p className="max-w-[600px] mx-auto text-muted-foreground md:text-xl">
+                    Zanymda Search - это поисковик на базе искусственного интеллекта, который помогает юристам экономить время на поиске похожих по смыслу дел в бюллетенях верховного суда, повышать точность и концентрироваться на важных задачах.
+                  </p>
+                </div>
+                <div className="flex flex-col gap-2 min-[400px]:flex-row justify-center">
+                  <Link
+                    href="/search"
+                    className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                    prefetch={false}
+                  >
+                    Zanymda search
+                  </Link>
+                  <Link
+                    href="/beta-test"
+                    className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-8 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                    prefetch={false}
+                  >
+                    Стать бета-тестером
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section className="w-full py-12 md:py-24 lg:py-32 bg-muted">
           <div className="container px-4 md:px-6">
             <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-3 lg:gap-12">
