@@ -2,43 +2,97 @@
 
 import Link from 'next/link';
 import React, { useState } from 'react';
+import { Sheet, SheetTrigger, SheetContent } from '@/components/ui/sheet';
+import { Button } from '@/components/ui/button';
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
   return (
-    <header className="px-4 lg:px-6 h-14 flex items-center justify-between bg-background">
+    <header className="flex h-16 w-full items-center justify-between bg-background px-4 sm:px-6 md:px-8">
       <Link href="/" className="flex items-center justify-center" prefetch={false}>
         <span className="text-2xl font-bold tracking-tighter sm:text-1xl xl:text-2xl/none bg-gradient-to-r from-[#1E3A8A] via-[#3B82F6] to-[#BFDBFE] bg-clip-text text-transparent">
           Zanymda.ai
         </span>
       </Link>
-      <button
-        className="text-gray-500 hover:text-gray-700 focus:outline-none lg:hidden"
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16m-7 6h7"} />
-        </svg>
-      </button>
-      <nav className={`ml-auto flex-col lg:flex lg:flex-row gap-4 sm:gap-6 ${isOpen ? 'flex' : 'hidden'}`}>
-        <Link
-          href="/beta-test"
-          className="inline-flex h-8 items-center justify-center rounded-md border border-input bg-background px-8 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-          prefetch={false}
-        >
-          Стать бета-тестером
+      <nav className="hidden items-center gap-6 md:flex">
+        <Link href="/" className="text-sm font-medium hover:text-primary" prefetch={false}>
+          Дом
         </Link>
-        <Link
-          href="/"
-          className="inline-flex h-8 items-center justify-center rounded-md border border-input bg-background px-8 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-          prefetch={false}
-        >
-          Зарегистрироваться
+        <Link href="/login" className="text-sm font-medium hover:text-primary" prefetch={false}>
+          Вход
+        </Link>
+        <Link href="/register" className="text-sm font-medium hover:text-primary" prefetch={false}>
+          Регистрация
         </Link>
       </nav>
+      <Sheet>
+        <SheetTrigger asChild>
+          <Button variant="ghost" size="icon" className="md:hidden">
+            <MenuIcon className="h-6 w-6" />
+            <span className="sr-only">Toggle navigation menu</span>
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="right" className="w-[200px] md:hidden">
+          <div className="grid gap-4 p-4">
+            <Link href="#" className="text-sm font-medium hover:text-primary" prefetch={false}>
+              Home
+            </Link>
+            <Link href="#" className="text-sm font-medium hover:text-primary" prefetch={false}>
+              About
+            </Link>
+            <Link href="#" className="text-sm font-medium hover:text-primary" prefetch={false}>
+              Services
+            </Link>
+            <Link href="#" className="text-sm font-medium hover:text-primary" prefetch={false}>
+              Contact
+            </Link>
+          </div>
+        </SheetContent>
+      </Sheet>
     </header>
   );
 };
+
+function MenuIcon(props: any) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <line x1="4" x2="20" y1="12" y2="12" />
+      <line x1="4" x2="20" y1="6" y2="6" />
+      <line x1="4" x2="20" y1="18" y2="18" />
+    </svg>
+  )
+}
+
+
+function XIcon(props: any) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M18 6 6 18" />
+      <path d="m6 6 12 12" />
+    </svg>
+  )
+}
+
 
 export default Navbar;
