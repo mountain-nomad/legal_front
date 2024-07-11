@@ -42,43 +42,44 @@ export default function Home() {
     <div className="flex flex-col min-h-[100dvh]">
       {/* <Register /> */}
       <main className="flex-1">
-      <section className="w-full py-12 md:py-12 lg:py-16 xl:py-24 bg-gradient-to-br bg-gradient-to-r from-[#ffffff] to-[#f1f1f1]">
+      <section className="w-full py-12 md:py-12 lg:py-16 xl:py-24 bg-gradient-to-br from-[#ffffff] to-[#f1f1f1]">
           <div className="container px-4 md:px-6">
             <div className="flex items-center justify-center">
               <div className="flex flex-col justify-center space-y-4">
                 <div className="space-y-2 text-center">
-                <div className="flex flex-col items-center space-y-4 md:space-y-0 md:flex-row md:items-center md:space-x-4">
-                  <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 bg-clip-text text-transparent">
-                    Ask
-                  </h1>
-                  <h3 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                    Ответы на любые вопросы
-                  </h3>
-                </div>
-                <p className="max-w-[600px] mx-auto text-muted-foreground text-center md:text-xl">
-                  Zanymda Ask - это помощник на базе искусственного интеллекта, который помогает гражданам разобраться в законах РК.
-                </p>
-                <div className="flex flex-col gap-2 min-[400px]:flex-row justify-center mt-4">
-                  <Link
-                    href="/search_for_non_prof"
-                    className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-                    prefetch={false}
-                  >
-                    Zanymda ask
-                  </Link>
-                  <Link
-                    href="/beta-test"
-                    className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-8 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-                    prefetch={false}
-                  >
-                    Стать бета-тестером
-                  </Link>
-                </div>
+                  <div className="flex flex-col items-center space-y-7 md:space-y-0 md:flex-row md:items-center md:space-x-4">
+                    <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 bg-clip-text text-transparent">
+                      Ask
+                    </h1>
+                    <h3 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl">
+                      Ответы на любые вопросы
+                    </h3>
+                  </div>
+                  <p className="max-w-[600px] mx-auto text-muted-foreground text-center md:text-xl">
+                    Zanymda Ask - это помощник на базе искусственного интеллекта, который помогает гражданам разобраться в законах РК.
+                  </p>
+                  <div className="flex flex-col gap-2 min-[400px]:flex-row justify-center mt-4">
+                    <Link
+                      href="/search_for_non_prof"
+                      className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                      prefetch={false}
+                    >
+                      Zanymda ask
+                    </Link>
+                    <Link
+                      href="/beta-test"
+                      className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-8 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                      prefetch={false}
+                    >
+                      Стать бета-тестером
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </section>
+
         <section className="w-full py-12 md:py-24 lg:py-32 bg-[#f1f1f1]">
           <div className="container px-4 md:px-6">
             <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-3 lg:gap-12">
