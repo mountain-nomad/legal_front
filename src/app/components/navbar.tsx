@@ -9,7 +9,7 @@ const Navbar = () => {
   return (
     <header className="positon: fixed flex h-16 w-full items-center justify-between bg-background px-4 sm:px-6 md:px-8">
       <Link href="/" className="flex items-center justify-center" prefetch={false}>
-        <span className="text-2xl font-bold tracking-tighter sm:text-1xl xl:text-2xl/none bg-gradient-to-r from-[#1E3A8A] via-[#3B82F6] to-[#BFDBFE] bg-clip-text text-transparent">
+        <span className="text-2xl font-bold tracking-tighter sm:text-1xl xl:text-1xl/none bg-gradient-to-r from-[#1E3A8A] via-[#3B82F6] to-[#BFDBFE] bg-clip-text text-transparent">
           Zanymda.ai
         </span>
       </Link>
