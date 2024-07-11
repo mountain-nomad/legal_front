@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 
 const Navbar = () => {
   return (
-    <header className="flex h-16 w-full items-center justify-between bg-background px-4 sm:px-6 md:px-8">
+    <header className="positon: fixed flex h-16 w-full items-center justify-between bg-background px-4 sm:px-6 md:px-8">
       <Link href="/" className="flex items-center justify-center" prefetch={false}>
         <span className="text-2xl font-bold tracking-tighter sm:text-1xl xl:text-2xl/none bg-gradient-to-r from-[#1E3A8A] via-[#3B82F6] to-[#BFDBFE] bg-clip-text text-transparent">
           Zanymda.ai
@@ -33,18 +33,15 @@ const Navbar = () => {
         </SheetTrigger>
         <SheetContent side="right" className="w-[200px] md:hidden">
           <div className="grid gap-4 p-4">
-            <Link href="#" className="text-sm font-medium hover:text-primary" prefetch={false}>
-              Home
-            </Link>
-            <Link href="#" className="text-sm font-medium hover:text-primary" prefetch={false}>
-              About
-            </Link>
-            <Link href="#" className="text-sm font-medium hover:text-primary" prefetch={false}>
-              Services
-            </Link>
-            <Link href="#" className="text-sm font-medium hover:text-primary" prefetch={false}>
-              Contact
-            </Link>
+          <Link href="/" className="text-sm font-medium hover:text-primary" prefetch={false}>
+            Дом
+          </Link>
+          <Link href="/login" className="text-sm font-medium hover:text-primary" prefetch={false}>
+            Вход
+          </Link>
+          <Link href="/register" className="text-sm font-medium hover:text-primary" prefetch={false}>
+            Регистрация
+          </Link>
           </div>
         </SheetContent>
       </Sheet>
