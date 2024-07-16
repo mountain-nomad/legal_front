@@ -39,7 +39,7 @@ interface ChatBubbleProps {
 
 const ChatBubble: React.FC<ChatBubbleProps> = ({ type, message }) => {
     const bubbleStyles = type === 'user'
-        ? 'bg-blue-500 text-white self-end'
+        ? 'bg-gradient-to-r from-[#1E3A8A] via-[#3B82F6] to-[#BFDBFE] text-white self-end'
         : 'bg-gray-300 text-black self-start';
 
     return (
