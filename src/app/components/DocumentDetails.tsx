@@ -1,0 +1,37 @@
+import React, { useState } from 'react';
+
+interface DocumentDetailsProps {
+    pageContent: string;
+    source: string;
+    page: string;
+}
+
+const DocumentDetails: React.FC<DocumentDetailsProps> = ({ pageContent, source, page }) => {
+    const [isExpanded, setIsExpanded] = useState(false);
+
+    const handleToggle = () => {
+        setIsExpanded(!isExpanded);
+    };
+
+    return (
+        <div className="bg-gray-200 text-black shadow-md rounded-md p-6 mt-4 mx-auto max-w-4xl">
+            <h3 className="text-lg font-semibold mb-2">Документы:</h3>
+            <button
+                onClick={handleToggle}
+                className="text-blue-500 underline"
+            >
+                {isExpanded ? 'Скрыть источник' : 'Показать источник ->'}
+            </button>
+            {isExpanded && (
+                <div className="space-y-4 mt-4">
+                    <div className="p-4 border border-gray-400 rounded-md bg-gray-300">
+                        <p className="text-black">{pageContent}</p>
+                        <p className="text-gray-600 mt-2 text-sm"><em>Источник: {source} Страница: {page}</em></p>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+};
+
+export default DocumentDetails;
