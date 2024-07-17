@@ -56,7 +56,7 @@ export default function Component() {
                   onChange={(e) => setEmail(e.target.value)}
                   className="bg-white text-gray-900 placeholder:text-gray-500"
                 />
-                <Button type="submit" className="bg-[#ffffff] text-gray-900 hover:bg-[#f1f1f1]">
+                <Button type="submit" className="bg-black text-white hover:bg-[#666666]" disabled={!email}>
                   Получить доступ бесплатно
                 </Button>
               </form>

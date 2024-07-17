@@ -119,7 +119,7 @@ const Chat: React.FC = () => {
                     ref={textareaRef}
                     value={query}
                     onChange={handleTextareaChange}
-                    placeholder="Введите ваш запрос..."
+                    placeholder="Как смягчить наказание за убийство?"
                     className="flex-grow p-2 bg-transparent text-black placeholder-gray-600 border-none focus:outline-none resize-none overflow-hidden"
                     rows={1}
                 />
@@ -127,6 +127,7 @@ const Chat: React.FC = () => {
                     <button
                         type="submit"
                         className="ml-2 p-2 bg-gray-400 text-black rounded-md hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                        disabled = {!query}
                     >
                         <ArrowUpIcon className="w-6 h-6 text-black" />
                     </button>

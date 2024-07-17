@@ -237,7 +237,7 @@ export default function Home() {
                     onChange={(e) => setEmail(e.target.value)}
                     className="flex-grow"
                   />
-                  <Button type="submit">Попробовать бесплатно</Button>
+                  <Button type="submit" disabled={!email}>Попробовать бесплатно</Button>
                 </form>
               </div>
               {message && (
