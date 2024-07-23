@@ -56,18 +56,72 @@ interface ChatResponse {
     source: string;
 }
 
-const Chat: React.FC = () => {
+interface ChatItem {
+    title: string;
+    messages: Array<{ text: string, sender: string, time: string, page_content?: string, source?: string }>;
+    time: string;
+}
+
+const Chat: React.FC<{ selectedChat: ChatItem | null, onNewQuery: () => void }> = ({ selectedChat, onNewQuery }) => {
     const [query, setQuery] = useState('');
-    const [chatHistory, setChatHistory] = useState<{ query: string, response: ChatResponse }[]>([]);
+    const [chatHistory, setChatHistory] = useState<{ query: string, response: ChatResponse, time: string }[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+    useEffect(() => {
+        if (textareaRef.current && query === '') {
+            textareaRef.current.focus();
+        }
+    }, [query]);
+
+    const handleRefreshToken = async () => {
+        const refreshToken = localStorage.getItem('refresh_token');
+        if (!refreshToken) return false;
+
+        try {
+            const response = await axios.post('https://legalapi-production.up.railway.app/refresh_token', { refresh_token: refreshToken });
+            if (response.status === 200) {
+                localStorage.setItem('access_token', response.data.access_token);
+                return true;
+            }
+        } catch (error) {
+            console.error('Error refreshing token:', error);
+            return false;
+        }
+    };
+
+    const fetchDataWithRetry = async (url: string, data: any) => {
+        let token = localStorage.getItem('access_token');
+        if (!token) return;
+
+        try {
+            const response = await axios.post(url, data, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            return response.data;
+        } catch (error) {
+            if (error.response && error.response.status === 401) {
+                const isRefreshed = await handleRefreshToken();
+                if (isRefreshed) {
+                    token = localStorage.getItem('access_token');
+                    const response = await axios.post(url, data, {
+                        headers: { Authorization: `Bearer ${token}` },
+                    });
+                    return response.data;
+                }
+            }
+            throw error;
+        }
+    };
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
         setIsLoading(true);
+
         try {
-            const result = await axios.post('https://legalapi-production.up.railway.app/get_response_constitution', { query });
-            setChatHistory([...chatHistory, { query, response: result.data.response }]);
+            const result = await fetchDataWithRetry('https://legalapi-production.up.railway.app/get_response_constitution', { query });
+            const messageTime = new Date().toISOString();
+            setChatHistory([...chatHistory, { query, response: result.response, time: messageTime }]);
             setQuery('');
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -92,25 +146,47 @@ const Chat: React.FC = () => {
     }, [query]);
 
     return (
-        <div className="flex flex-col items-center min-h-screen bg-white-100 p-4 pt-16">
+        <div className="flex flex-col items-center min-h-screen bg-white-100 p-4 pt-16 w-full">
             <div className="w-full max-w-3xl bg-gray-200 shadow-md rounded-md p-4 mb-2">
                 <div className="flex flex-col space-y-2">
-                    {chatHistory.length === 0 && !isLoading && (
-                        <div className="flex justify-center items-center h-full">
-                            <p className="text-lg text-gray-700">Добро пожаловать! Начните чат, задав свой вопрос.</p>
-                        </div>
+                    {selectedChat ? (
+                        <>
+                            {selectedChat.messages.map((message, index) => (
+                                <ChatBubble key={index} type={message.sender} message={message.text} />
+                            ))}
+                            {selectedChat.messages.map((message, index) => (
+                                message.page_content && message.source && (
+                                    <div className="self-start w-full" key={index}>
+                                        <DocumentDetails
+                                            pageContent={message.page_content}
+                                            source={message.source}
+                                            page={message.text}
+                                        />
+                                    </div>
+                                )
+                            ))}
+                        </>
+                    ) : (
+                        <>
+                            {chatHistory.length === 0 && !isLoading && (
+                                <div className="flex justify-center items-center h-full">
+                                    <p className="text-lg text-gray-700">Добро пожаловать! Начните чат, задав свой вопрос.</p>
+                                </div>
+                            )}
+                            {chatHistory.map((entry, index) => (
+                                <div key={index}>
+                                    <ChatBubble type="user" message={entry.query} />
+                                    <ChatBubble type="bot" message={`Ответ: ${entry.response.result}`} />
+                                    <DocumentDetails 
+                                        pageContent={entry.response.page_content} 
+                                        source={entry.response.source} 
+                                        page={entry.response.query} 
+                                    />
+                                    <p className="text-xs text-gray-500">{new Date(entry.time).toLocaleString()}</p>
+                                </div>
+                            ))}
+                        </>
                     )}
-                    {chatHistory.map((entry, index) => (
-                        <div key={index}>
-                            <ChatBubble type="user" message={entry.query} />
-                            <ChatBubble type="bot" message={`Ответ: ${entry.response.result}`} />
-                            <DocumentDetails 
-                                pageContent={entry.response.page_content} 
-                                source={entry.response.source} 
-                                page={entry.response.query} 
-                            />
-                        </div>
-                    ))}
                     {isLoading && <LoadingMessages />}
                 </div>
             </div>

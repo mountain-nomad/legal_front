@@ -47,31 +47,24 @@ export default function Home() {
           <div className="flex items-center justify-center">
             <div className="flex flex-col justify-center space-y-4">
               <div className="space-y-2 text-center">
-                <div className="flex flex-col items-center space-y-7 md:space-y-0 md:flex-row md:items-center md:space-x-4">
-                  <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 bg-clip-text text-transparent mt-8 md:mt-0">
-                    Ask
-                  </h1>
-                  <h3 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl">
-                    Ответы на любые вопросы
-                  </h3>
-                </div>
+              <div className="flex flex-col items-center space-y-7">
+                <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 bg-clip-text text-transparent mt-8 md:mt-0">
+                  Ask
+                </h1>
+                <h3 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl text-center">
+                  Ответы на любые юридические вопросы
+                </h3>
+              </div>
                 <p className="max-w-[600px] mx-auto text-muted-foreground text-center md:text-xl">
                   Zanymda Ask - это помощник на базе искусственного интеллекта, который помогает гражданам разобраться в законах РК.
                 </p>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row justify-center mt-4">
                   <Link
                     href="/search_for_non_prof"
-                    className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                    className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-36 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                     prefetch={false}
                   >
                     Zanymda ask
-                  </Link>
-                  <Link
-                    href="/beta-test"
-                    className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-8 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-                    prefetch={false}
-                  >
-                    Стать бета-тестером
                   </Link>
                 </div>
               </div>
@@ -128,13 +121,12 @@ export default function Home() {
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row justify-center mt-4">
-                  <Link
-                    href="/search"
+                  <Button
                     className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-                    prefetch={false}
+                    disabled
                   >
-                    Zanymda search
-                  </Link>
+                    Zanymda search <span className="ml-2 text-xs text-gray-500">beta</span>
+                  </Button>
                   <Link
                     href="/beta-test"
                     className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-8 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -14,6 +15,7 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState(""); // success or error
+  const router = useRouter();
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -32,17 +34,20 @@ const Register = () => {
       if (response.status === 200) {
         setMessage("Успешно зарегистрированы");
         setMessageType("success");
+        setTimeout(() => {
+          router.push("/login");
+        }, 2000); // Redirect to login after 2 seconds
       }
-    }catch (err: any) {
-        const errorDetail = err.response?.data?.detail;
-        if (errorDetail === "Email already registered") {
-          setMessage("Пользователь с таким email уже зарегистрирован");
-        } else if (errorDetail === "Username already taken") {
-          setMessage("Никнейм уже занят");
-        } else {
-          setMessage("Произошла ошибка");
-        }
-        setMessageType("error");
+    } catch (err: any) {
+      const errorDetail = err.response?.data?.detail;
+      if (errorDetail === "Email already registered") {
+        setMessage("Пользователь с таким email уже зарегистрирован");
+      } else if (errorDetail === "Username already taken") {
+        setMessage("Никнейм уже занят");
+      } else {
+        setMessage("Произошла ошибка");
+      }
+      setMessageType("error");
     }
   };
 

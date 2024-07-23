@@ -1,11 +1,40 @@
 "use client"
 
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { Sheet, SheetTrigger, SheetContent } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 
 const Navbar = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      const token = localStorage.getItem('access_token');
+      if (!token) return;
+
+      try {
+        const response = await axios.get('https://legalapi-production.up.railway.app/user_info', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setUsername(response.data.username);
+        setIsLoggedIn(true);
+      } catch (error) {
+        console.error('Error fetching user info:', error);
+      }
+    };
+
+    fetchUserInfo();
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('access_token');
+    setIsLoggedIn(false);
+    setUsername(null);
+  };
+
   return (
     <header className="positon: fixed flex h-16 w-full items-center justify-between bg-background px-4 sm:px-6 md:px-8 z-20">
       <Link href="/" className="flex items-center justify-center" prefetch={false}>
@@ -17,12 +46,23 @@ const Navbar = () => {
         <Link href="/" className="text-sm font-medium hover:text-primary" prefetch={false}>
           Дом
         </Link>
-        <Link href="/login" className="text-sm font-medium hover:text-primary" prefetch={false}>
-          Вход
-        </Link>
-        <Link href="/register" className="text-sm font-medium hover:text-primary" prefetch={false}>
-          Регистрация
-        </Link>
+        {!isLoggedIn ? (
+          <>
+            <Link href="/login" className="text-sm font-medium hover:text-primary" prefetch={false}>
+              Вход
+            </Link>
+            <Link href="/register" className="text-sm font-medium hover:text-primary" prefetch={false}>
+              Регистрация
+            </Link>
+          </>
+        ) : (
+          <>
+            <button onClick={handleLogout} className="text-sm font-medium hover:text-primary">
+              Выход
+            </button>
+            <span className="text-sm font-medium">{username}</span>
+          </>
+        )}
       </nav>
       <Sheet>
         <SheetTrigger asChild>
@@ -33,15 +73,26 @@ const Navbar = () => {
         </SheetTrigger>
         <SheetContent side="right" className="w-[200px] md:hidden">
           <div className="grid gap-4 p-4">
-          <Link href="/" className="text-sm font-medium hover:text-primary" prefetch={false}>
-            Дом
-          </Link>
-          <Link href="/login" className="text-sm font-medium hover:text-primary" prefetch={false}>
-            Вход
-          </Link>
-          <Link href="/register" className="text-sm font-medium hover:text-primary" prefetch={false}>
-            Регистрация
-          </Link>
+            <Link href="/" className="text-sm font-medium hover:text-primary" prefetch={false}>
+              Дом
+            </Link>
+            {!isLoggedIn ? (
+              <>
+                <Link href="/login" className="text-sm font-medium hover:text-primary" prefetch={false}>
+                  Вход
+                </Link>
+                <Link href="/register" className="text-sm font-medium hover:text-primary" prefetch={false}>
+                  Регистрация
+                </Link>
+              </>
+            ) : (
+              <>
+                <span className="text-sm font-medium">Рад вас видеть, {username}</span>
+                <button onClick={handleLogout} className="text-sm font-medium hover:text-primary">
+                  Выход
+                </button>
+              </>
+            )}
           </div>
         </SheetContent>
       </Sheet>
@@ -70,7 +121,6 @@ function MenuIcon(props: any) {
   )
 }
 
-
 function XIcon(props: any) {
   return (
     <svg
@@ -90,6 +140,5 @@ function XIcon(props: any) {
     </svg>
   )
 }
-
 
 export default Navbar;

@@ -1,6 +1,7 @@
-"use client"
+"use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -12,6 +13,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState(""); // success or error
+  const router = useRouter();
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -24,7 +26,11 @@ const Login = () => {
       if (response.status === 200) {
         setMessage("Успешный вход");
         setMessageType("success");
-        // Here you can handle the successful login, e.g., redirect the user or save the token
+        localStorage.setItem('access_token', response.data.access_token);
+        localStorage.setItem('refresh_token', response.data.refresh_token);
+        setTimeout(() => {
+          router.push("/search_for_non_prof");
+        }, 2000); // Redirect to /search_for_non_prof after 2 seconds
       }
     } catch (err) {
       setMessage("Неверное имя пользователя или пароль");
