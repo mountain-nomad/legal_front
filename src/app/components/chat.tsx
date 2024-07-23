@@ -84,7 +84,7 @@ const Chat: React.FC<{ selectedChat: ChatItem | null, onNewQuery: () => void }> 
                 localStorage.setItem('access_token', response.data.access_token);
                 return true;
             }
-        } catch (error) {
+        } catch (error : any) {
             console.error('Error refreshing token:', error);
             return false;
         }
@@ -99,7 +99,7 @@ const Chat: React.FC<{ selectedChat: ChatItem | null, onNewQuery: () => void }> 
                 headers: { Authorization: `Bearer ${token}` },
             });
             return response.data;
-        } catch (error) {
+        } catch (error : any) {
             if (error.response && error.response.status === 401) {
                 const isRefreshed = await handleRefreshToken();
                 if (isRefreshed) {
@@ -123,7 +123,7 @@ const Chat: React.FC<{ selectedChat: ChatItem | null, onNewQuery: () => void }> 
             const messageTime = new Date().toISOString();
             setChatHistory([...chatHistory, { query, response: result.response, time: messageTime }]);
             setQuery('');
-        } catch (error) {
+        } catch (error : any) {
             console.error('Error fetching data:', error);
         } finally {
             setIsLoading(false);
