@@ -1,12 +1,20 @@
-"use client"
+"use client";
 
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
+interface Message {
+    text: string;
+    sender: 'user' | 'bot';
+    time: string;
+    page_content?: string;
+    source?: string;
+}
+
 interface ChatItem {
     title: string;
-    messages: Array<{ text: string, sender: string, time: string }>;
+    messages: Message[];
     time: string;
 }
 
@@ -33,7 +41,7 @@ function MenuIcon(props: any) {
             <line x1="4" x2="20" y1="6" y2="6" />
             <line x1="4" x2="20" y1="18" y2="18" />
         </svg>
-    )
+    );
 }
 
 function XIcon(props: any) {
@@ -53,7 +61,7 @@ function XIcon(props: any) {
             <path d="M18 6 6 18" />
             <path d="m6 6 12 12" />
         </svg>
-    )
+    );
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ onSelectChat, onAddNewQuery }) => {
@@ -77,7 +85,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectChat, onAddNewQuery }) => {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setChatHistory(response.data.chat_history);
-            } catch (error) {
+            } catch (error: any) {
                 console.error('Error fetching chat history:', error);
             }
         };
@@ -91,7 +99,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectChat, onAddNewQuery }) => {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setUsername(response.data.username);
-            } catch (error) {
+            } catch (error: any) {
                 console.error('Error fetching username:', error);
             }
         };
@@ -187,7 +195,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectChat, onAddNewQuery }) => {
                                     + добавить новый запрос
                                 </button>
                                 <ul>
-                                    {chatHistory.map((chat, index) => (
+                                    {chatHistory.map((chat: ChatItem, index: number) => (
                                         <li
                                             key={index}
                                             className="mb-2 p-2 bg-gray-200 rounded-md cursor-pointer hover:bg-gray-300"
@@ -220,13 +228,13 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectChat, onAddNewQuery }) => {
                             <h2 className="text-lg font-semibold mb-4">История запросов</h2>
                         </div>
                         <button 
-                            className="mb-4 p-2 bg-primary rounded-md text-white w-full hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring" //inline-flex h-10 items-center justify-center rounded-md bg-primary px-36 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50
+                            className="mb-4 p-2 bg-primary rounded-md text-white w-full hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring" 
                             onClick={() => handleButtonClick(onAddNewQuery)} 
                         >
                             + добавить новый запрос
                         </button>
                         <ul>
-                            {chatHistory.map((chat, index) => (
+                            {chatHistory.map((chat: ChatItem, index: number) => (
                                 <li
                                     key={index}
                                     className="mb-2 p-2 bg-gray-200 rounded-md cursor-pointer hover:bg-gray-300"

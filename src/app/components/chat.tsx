@@ -4,20 +4,20 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import DocumentDetails from './DocumentDetails'; // Make sure to import the DocumentDetails component
 
-const loadingStages = [
+const loadingStages: any = [
     "Изучаем дела...",
     "Рассматриваем базу...",
     "Подбираем совпадения..."
 ];
 
 const LoadingMessages: React.FC = () => {
-    const [currentStage, setCurrentStage] = useState(0);
-    const [loadingMessage, setLoadingMessage] = useState(loadingStages[0]);
+    const [currentStage, setCurrentStage] = useState<any>(0);
+    const [loadingMessage, setLoadingMessage] = useState<any>(loadingStages[0]);
 
     useEffect(() => {
         if (currentStage < loadingStages.length - 1) {
             const timeout = setTimeout(() => {
-                setCurrentStage((prevStage) => prevStage + 1);
+                setCurrentStage((prevStage: any) => prevStage + 1);
                 setLoadingMessage(loadingStages[currentStage + 1]);
             }, 2000);
 
@@ -62,10 +62,10 @@ interface ChatItem {
     time: string;
 }
 
-const Chat: React.FC<{ selectedChat: ChatItem | null, onNewQuery: () => void }> = ({ selectedChat, onNewQuery }) => {
-    const [query, setQuery] = useState('');
-    const [chatHistory, setChatHistory] = useState<{ query: string, response: ChatResponse, time: string }[]>([]);
-    const [isLoading, setIsLoading] = useState(false);
+const Chat: React.FC<{ selectedChat: ChatItem | null, onNewQuery: any }> = ({ selectedChat, onNewQuery }) => {
+    const [query, setQuery] = useState<any>('');
+    const [chatHistory, setChatHistory] = useState<any>([]);
+    const [isLoading, setIsLoading] = useState<any>(false);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     useEffect(() => {
@@ -84,7 +84,7 @@ const Chat: React.FC<{ selectedChat: ChatItem | null, onNewQuery: () => void }> 
                 localStorage.setItem('access_token', response.data.access_token);
                 return true;
             }
-        } catch (error : any) {
+        } catch (error: any) {
             console.error('Error refreshing token:', error);
             return false;
         }
@@ -99,7 +99,7 @@ const Chat: React.FC<{ selectedChat: ChatItem | null, onNewQuery: () => void }> 
                 headers: { Authorization: `Bearer ${token}` },
             });
             return response.data;
-        } catch (error : any) {
+        } catch (error: any) {
             if (error.response && error.response.status === 401) {
                 const isRefreshed = await handleRefreshToken();
                 if (isRefreshed) {
@@ -114,7 +114,7 @@ const Chat: React.FC<{ selectedChat: ChatItem | null, onNewQuery: () => void }> 
         }
     };
 
-    const handleSubmit = async (event: React.FormEvent) => {
+    const handleSubmit = async (event: any) => {
         event.preventDefault();
         setIsLoading(true);
 
@@ -123,14 +123,14 @@ const Chat: React.FC<{ selectedChat: ChatItem | null, onNewQuery: () => void }> 
             const messageTime = new Date().toISOString();
             setChatHistory([...chatHistory, { query, response: result.response, time: messageTime }]);
             setQuery('');
-        } catch (error : any) {
+        } catch (error: any) {
             console.error('Error fetching data:', error);
         } finally {
             setIsLoading(false);
         }
     };
 
-    const handleTextareaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const handleTextareaChange = (event: any) => {
         setQuery(event.target.value);
         if (textareaRef.current) {
             textareaRef.current.style.height = 'auto';
@@ -151,10 +151,10 @@ const Chat: React.FC<{ selectedChat: ChatItem | null, onNewQuery: () => void }> 
                 <div className="flex flex-col space-y-2">
                     {selectedChat ? (
                         <>
-                            {selectedChat.messages.map((message, index) => (
+                            {selectedChat.messages.map((message: any, index: any) => (
                                 <ChatBubble key={index} type={message.sender} message={message.text} />
                             ))}
-                            {selectedChat.messages.map((message, index) => (
+                            {selectedChat.messages.map((message: any, index: any) => (
                                 message.page_content && message.source && (
                                     <div className="self-start w-full" key={index}>
                                         <DocumentDetails
@@ -173,7 +173,7 @@ const Chat: React.FC<{ selectedChat: ChatItem | null, onNewQuery: () => void }> 
                                     <p className="text-lg text-gray-700">Добро пожаловать! Начните чат, задав свой вопрос.</p>
                                 </div>
                             )}
-                            {chatHistory.map((entry, index) => (
+                            {chatHistory.map((entry: any, index: any) => (
                                 <div key={index}>
                                     <ChatBubble type="user" message={entry.query} />
                                     <ChatBubble type="bot" message={`Ответ: ${entry.response.result}`} />
@@ -203,7 +203,7 @@ const Chat: React.FC<{ selectedChat: ChatItem | null, onNewQuery: () => void }> 
                     <button
                         type="submit"
                         className="ml-2 p-2 bg-gray-400 text-black rounded-md hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-                        disabled = {!query}
+                        disabled={!query}
                     >
                         <ArrowUpIcon className="w-6 h-6 text-black" />
                     </button>
