@@ -177,7 +177,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectChat, onAddNewQuery }) => {
     return (
         <div>
             {isMobile ? (
-                <div className="fixed top-0 left-0 h-16 w-16 bg-white shadow-md z-50">
+                <div className="fixed top-0 left-0 h-16 w-64 bg-white z-50">
                     <button onClick={toggleSidebar} className="p-1 m-2">
                         {isCollapsed ? <MenuIcon /> : <XIcon />}
                     </button>
@@ -189,7 +189,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectChat, onAddNewQuery }) => {
                                 </button>
                                 <h2 className="text-lg font-semibold mb-4">История запросов</h2>
                                 <button 
-                                    className="mb-4 p-2 bg-blue-500 rounded-md hover:bg-blue-600 text-white w-full"
+                                    className="mb-4 p-2 bg-primary rounded-md text-white w-full hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                                     onClick={() => handleButtonClick(onAddNewQuery)}
                                 >
                                     + добавить новый запрос

@@ -4,20 +4,20 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import DocumentDetails from './DocumentDetails'; // Make sure to import the DocumentDetails component
 
-const loadingStages: any = [
+const loadingStages: string[] = [
     "Изучаем дела...",
     "Рассматриваем базу...",
     "Подбираем совпадения..."
 ];
 
 const LoadingMessages: React.FC = () => {
-    const [currentStage, setCurrentStage] = useState<any>(0);
-    const [loadingMessage, setLoadingMessage] = useState<any>(loadingStages[0]);
+    const [currentStage, setCurrentStage] = useState<number>(0);
+    const [loadingMessage, setLoadingMessage] = useState<string>(loadingStages[0]);
 
     useEffect(() => {
         if (currentStage < loadingStages.length - 1) {
             const timeout = setTimeout(() => {
-                setCurrentStage((prevStage: any) => prevStage + 1);
+                setCurrentStage((prevStage) => prevStage + 1);
                 setLoadingMessage(loadingStages[currentStage + 1]);
             }, 2000);
 
@@ -58,14 +58,14 @@ interface ChatResponse {
 
 interface ChatItem {
     title: string;
-    messages: Array<{ text: string, sender: string, time: string, page_content?: string, source?: string }>;
+    messages: Array<{ text: string; sender: 'user' | 'bot'; time: string; page_content?: string; source?: string }>;
     time: string;
 }
 
-const Chat: React.FC<{ selectedChat: ChatItem | null, onNewQuery: any }> = ({ selectedChat, onNewQuery }) => {
-    const [query, setQuery] = useState<any>('');
-    const [chatHistory, setChatHistory] = useState<any>([]);
-    const [isLoading, setIsLoading] = useState<any>(false);
+const Chat: React.FC<{ selectedChat: ChatItem | null; onNewQuery: () => void }> = ({ selectedChat, onNewQuery }) => {
+    const [query, setQuery] = useState<string>('');
+    const [chatHistory, setChatHistory] = useState<Array<{ query: string; response: ChatResponse; time: string }>>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     useEffect(() => {
@@ -92,12 +92,9 @@ const Chat: React.FC<{ selectedChat: ChatItem | null, onNewQuery: any }> = ({ se
 
     const fetchDataWithRetry = async (url: string, data: any) => {
         let token = localStorage.getItem('access_token');
-        if (!token) return;
-
         try {
-            const response = await axios.post(url, data, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
+            const headers = token ? { Authorization: `Bearer ${token}` } : {};
+            const response = await axios.post(url, data, { headers });
             return response.data;
         } catch (error: any) {
             if (error.response && error.response.status === 401) {
@@ -114,15 +111,32 @@ const Chat: React.FC<{ selectedChat: ChatItem | null, onNewQuery: any }> = ({ se
         }
     };
 
-    const handleSubmit = async (event: any) => {
+    const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
         setIsLoading(true);
 
         try {
             const result = await fetchDataWithRetry('https://legalapi-production.up.railway.app/get_response_constitution', { query });
-            const messageTime = new Date().toISOString();
-            setChatHistory([...chatHistory, { query, response: result.response, time: messageTime }]);
-            setQuery('');
+
+            if (result && result.response && result.response.result && result.response.page_content && result.response.source) {
+                const messageTime = new Date().toISOString();
+                setChatHistory([...chatHistory, { query, response: result.response, time: messageTime }]);
+                setQuery('');
+
+                // Save to database only if authenticated
+                const token = localStorage.getItem('access_token');
+                if (token) {
+                    try {
+                        await axios.post('https://legalapi-production.up.railway.app/save_chat', { query, response: result.response, time: messageTime }, {
+                            headers: { Authorization: `Bearer ${token}` },
+                        });
+                    } catch (error: any) {
+                        console.error('Error saving chat history:', error);
+                    }
+                }
+            } else {
+                console.error('Received incomplete response:', result);
+            }
         } catch (error: any) {
             console.error('Error fetching data:', error);
         } finally {
@@ -130,7 +144,7 @@ const Chat: React.FC<{ selectedChat: ChatItem | null, onNewQuery: any }> = ({ se
         }
     };
 
-    const handleTextareaChange = (event: any) => {
+    const handleTextareaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setQuery(event.target.value);
         if (textareaRef.current) {
             textareaRef.current.style.height = 'auto';
@@ -146,21 +160,20 @@ const Chat: React.FC<{ selectedChat: ChatItem | null, onNewQuery: any }> = ({ se
     }, [query]);
 
     return (
-        <div className="flex flex-col items-center min-h-screen bg-white-100 p-4 pt-16 w-full">
-            <div className="w-full max-w-3xl bg-gray-200 shadow-md rounded-md p-4 mb-2">
-                <div className="flex flex-col space-y-2">
+        <div className="flex flex-col items-center min-h-screen bg-white-100 p-4 pt-4 w-full">
+            <div className="w-full max-w-3xl bg-gray-200 shadow-md rounded-md p-4 mb-2 flex-grow">
+                <div className="flex flex-col space-y-2 h-full justify-end"> {/* Added h-full and justify-end to push content to the bottom */}
                     {selectedChat ? (
                         <>
-                            {selectedChat.messages.map((message: any, index: any) => (
+                            {selectedChat.messages.map((message, index) => (
                                 <ChatBubble key={index} type={message.sender} message={message.text} />
                             ))}
-                            {selectedChat.messages.map((message: any, index: any) => (
+                            {selectedChat.messages.map((message, index) => (
                                 message.page_content && message.source && (
                                     <div className="self-start w-full" key={index}>
                                         <DocumentDetails
                                             pageContent={message.page_content}
                                             source={message.source}
-                                            page={message.text}
                                         />
                                     </div>
                                 )
@@ -173,15 +186,18 @@ const Chat: React.FC<{ selectedChat: ChatItem | null, onNewQuery: any }> = ({ se
                                     <p className="text-lg text-gray-700">Добро пожаловать! Начните чат, задав свой вопрос.</p>
                                 </div>
                             )}
-                            {chatHistory.map((entry: any, index: any) => (
+                            {chatHistory.map((entry, index) => (
                                 <div key={index}>
                                     <ChatBubble type="user" message={entry.query} />
                                     <ChatBubble type="bot" message={`Ответ: ${entry.response.result}`} />
-                                    <DocumentDetails 
-                                        pageContent={entry.response.page_content} 
-                                        source={entry.response.source} 
-                                        page={entry.response.query} 
-                                    />
+                                    {entry.response.page_content && entry.response.source && (
+                                        <div className="self-start w-full">
+                                            <DocumentDetails
+                                                pageContent={entry.response.page_content}
+                                                source={entry.response.source}
+                                            />
+                                        </div>
+                                    )}
                                     <p className="text-xs text-gray-500">{new Date(entry.time).toLocaleString()}</p>
                                 </div>
                             ))}
@@ -216,21 +232,21 @@ const Chat: React.FC<{ selectedChat: ChatItem | null, onNewQuery: any }> = ({ se
 export default Chat;
 
 function ArrowUpIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="m5 12 7-7 7 7" />
-      <path d="M12 19V5" />
-    </svg>
-  );
+    return (
+        <svg
+            {...props}
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        >
+            <path d="m5 12 7-7 7 7" />
+            <path d="M12 19V5" />
+        </svg>
+    );
 }

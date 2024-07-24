@@ -3,10 +3,9 @@ import React, { useState } from 'react';
 interface DocumentDetailsProps {
     pageContent: string;
     source: string;
-    page: string;
 }
 
-const DocumentDetails: React.FC<DocumentDetailsProps> = ({ pageContent, source, page }) => {
+const DocumentDetails: React.FC<DocumentDetailsProps> = ({ pageContent, source }) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
     const handleToggle = () => {
@@ -26,7 +25,7 @@ const DocumentDetails: React.FC<DocumentDetailsProps> = ({ pageContent, source, 
                 <div className="space-y-4 mt-4">
                     <div className="p-4 border border-gray-400 rounded-md bg-gray-300">
                         <p className="text-black">{pageContent}</p>
-                        <p className="text-gray-600 mt-2 text-sm"><em>Источник: {source} Страница: {page}</em></p>
+                        <p className="text-gray-600 mt-2 text-sm"><em>Источник: {source}</em></p>
                     </div>
                 </div>
             )}

@@ -51,7 +51,7 @@ export default function Home() {
                 <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 bg-clip-text text-transparent mt-8 md:mt-0">
                   Ask
                 </h1>
-                <h3 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl text-center">
+                <h3 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-5xl text-center">
                   Ответы на любые юридические вопросы
                 </h3>
               </div>
