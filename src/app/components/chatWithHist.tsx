@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import DocumentDetails from './DocumentDetails';
+import DocumentDetails from './DocumentDetails'; // Make sure to import the DocumentDetails component
 
 const loadingStages: string[] = [
     "Изучаем дела...",
@@ -70,16 +70,10 @@ export interface ChatItem {
     time: string;
 }
 
-interface ChatProps {
-    selectedChat: ChatItem | null;
-    onNewQuery: () => void;
-}
-
-const Chat: React.FC<ChatProps> = ({ selectedChat, onNewQuery }) => {
+const ChatWithHist: React.FC<{ selectedChat: ChatItem | null; onNewQuery: () => void }> = ({ selectedChat, onNewQuery }) => {
     const [query, setQuery] = useState<string>('');
     const [chatHistory, setChatHistory] = useState<Array<{ query: string; response: ChatResponse; time: string }>>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [isRecording, setIsRecording] = useState<boolean>(false);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     useEffect(() => {
@@ -88,7 +82,7 @@ const Chat: React.FC<ChatProps> = ({ selectedChat, onNewQuery }) => {
         }
     }, [query]);
 
-    const handleRefreshToken = async (): Promise<boolean> => {
+    const handleRefreshToken = async () => {
         const refreshToken = localStorage.getItem('refresh_token');
         if (!refreshToken) return false;
 
@@ -98,14 +92,13 @@ const Chat: React.FC<ChatProps> = ({ selectedChat, onNewQuery }) => {
                 localStorage.setItem('access_token', response.data.access_token);
                 return true;
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error('Error refreshing token:', error);
             return false;
         }
-        return false;
     };
 
-    const fetchDataWithRetry = async (url: string, data: any): Promise<any> => {
+    const fetchDataWithRetry = async (url: string, data: any) => {
         let token = localStorage.getItem('access_token');
         try {
             const headers = token ? { Authorization: `Bearer ${token}` } : {};
@@ -131,28 +124,29 @@ const Chat: React.FC<ChatProps> = ({ selectedChat, onNewQuery }) => {
         setIsLoading(true);
 
         try {
-            const result = await fetchDataWithRetry('https://legalapi-production.up.railway.app/get_response_constitution', { query });
+            const context = chatHistory.map(entry => `${entry.query} ${entry.response.result}`).join(' ');
+            const result = await fetchDataWithRetry('https://legalapi-production.up.railway.app/get_response_constitution', { query, context });
 
             if (result && result.response) {
                 const messageTime = new Date().toISOString();
                 setChatHistory([...chatHistory, { query, response: result.response, time: messageTime }]);
                 setQuery('');
 
+                // Save to database only if authenticated
                 const token = localStorage.getItem('access_token');
                 if (token) {
                     try {
-                        console.log("Saving chat history:", { query, response: result.response, time: messageTime });
                         await axios.post('https://legalapi-production.up.railway.app/save_chat', { query, response: result.response, time: messageTime }, {
                             headers: { Authorization: `Bearer ${token}` },
                         });
-                    } catch (error) {
+                    } catch (error: any) {
                         console.error('Error saving chat history:', error);
                     }
                 }
             } else {
                 console.error('Received incomplete response:', result);
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error('Error fetching data:', error);
         } finally {
             setIsLoading(false);
@@ -174,43 +168,8 @@ const Chat: React.FC<ChatProps> = ({ selectedChat, onNewQuery }) => {
         }
     }, [query]);
 
-    const handleVoiceInput = () => {
-        const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-        if (SpeechRecognition) {
-            const recognition = new SpeechRecognition();
-            recognition.lang = 'ru-RU';
-            recognition.continuous = false;
-            recognition.interimResults = false;
-
-            recognition.onstart = () => {
-                console.log('Speech recognition started');
-                setIsRecording(true);
-            };
-
-            recognition.onresult = (event: SpeechRecognitionEvent) => {
-                const transcript = event.results[0][0].transcript;
-                setQuery(transcript);
-                setIsRecording(false);
-            };
-
-            recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
-                console.error('Speech recognition error:', event);
-                setIsRecording(false);
-            };
-
-            recognition.onend = () => {
-                console.log('Speech recognition ended');
-                setIsRecording(false);
-            };
-
-            recognition.start();
-        } else {
-            console.error('Speech recognition not supported in this browser');
-        }
-    };
-
     return (
-        <div className="flex flex-col items-center min-h-screen bg-white-100 p-4 pt-6 w-full">
+        <div className="flex flex-col items-center min-h-screen bg-white-100 p-4 pt-16 w-full">
             <div className="w-full max-w-full bg-gray-200 shadow-md rounded-md p-4 mb-2 flex-grow">
                 <div className="flex flex-col space-y-2 h-full">
                     {selectedChat ? (
@@ -220,7 +179,7 @@ const Chat: React.FC<ChatProps> = ({ selectedChat, onNewQuery }) => {
                             ))}
                             {selectedChat.messages.map((message, index) => (
                                 message.page_content && message.source && (
-                                    <div className="self-start w-full text-left" key={index}>
+                                    <div className="self-start w-full" key={index}>
                                         <DocumentDetails
                                             pageContent={message.page_content}
                                             source={message.source}
@@ -241,7 +200,7 @@ const Chat: React.FC<ChatProps> = ({ selectedChat, onNewQuery }) => {
                                     <ChatBubble type="user" message={entry.query} />
                                     <ChatBubble type="bot" message={`Ответ: ${entry.response.result}`} />
                                     {entry.response.page_content && entry.response.source && (
-                                        <div className="self-start w-full text-left">
+                                        <div className="self-start w-full">
                                             <DocumentDetails
                                                 pageContent={entry.response.page_content}
                                                 source={entry.response.source}
@@ -256,11 +215,6 @@ const Chat: React.FC<ChatProps> = ({ selectedChat, onNewQuery }) => {
                     {isLoading && <LoadingMessages />}
                 </div>
             </div>
-            {isRecording && (
-                <div className="fixed top-0 left-0 w-full bg-red-500 text-white text-center p-2">
-                    Идет запись...
-                </div>
-            )}
             <form onSubmit={handleSubmit} className="w-full max-w-full p-2 bg-gray-300 shadow-md rounded-md flex items-center">
                 <textarea
                     ref={textareaRef}
@@ -271,29 +225,20 @@ const Chat: React.FC<ChatProps> = ({ selectedChat, onNewQuery }) => {
                     rows={1}
                 />
                 {!isLoading && (
-                    <>
-                        <button
-                            type="submit"
-                            className="ml-2 p-2 bg-gray-400 text-black rounded-md hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-                            disabled={!query}
-                        >
-                            <ArrowUpIcon className="w-6 h-6 text-black" />
-                        </button>
-                        <button
-                            type="button"
-                            onClick={handleVoiceInput}
-                            className="ml-2 p-2 bg-gray-400 text-black rounded-md hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-                        >
-                            <MicIcon className="w-6 h-6 text-black" />
-                        </button>
-                    </>
+                    <button
+                        type="submit"
+                        className="ml-2 p-2 bg-gray-400 text-black rounded-md hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                        disabled={!query}
+                    >
+                        <ArrowUpIcon className="w-6 h-6 text-black" />
+                    </button>
                 )}
             </form>
         </div>
     );
 };
 
-export default Chat;
+export default ChatWithHist;
 
 function ArrowUpIcon(props: any) {
     return (
@@ -311,27 +256,6 @@ function ArrowUpIcon(props: any) {
         >
             <path d="m5 12 7-7 7 7" />
             <path d="M12 19V5" />
-        </svg>
-    );
-}
-
-function MicIcon(props: any) {
-    return (
-        <svg
-            {...props}
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-        >
-            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z" />
-            <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-            <line x1="12" x2="12" y1="19" y2="22" />
         </svg>
     );
 }

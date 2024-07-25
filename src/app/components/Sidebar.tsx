@@ -222,7 +222,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectChat, onAddNewQuery }) => {
                     )}
                 </div>
             ) : (
-                <div ref={sidebarRef} className={`mt-12 fixed top-0 left-0 h-screen bg-white shadow-md overflow-y-auto transition-width duration-200 ${isCollapsed ? 'w-16' : 'w-64'}`}>
+                <div ref={sidebarRef} className={`mt-16 fixed top-0 left-0 h-screen bg-white shadow-md overflow-y-auto transition-width duration-200 ${isCollapsed ? 'w-16' : 'w-64'}`}>
                     <div className="relative h-full p-4">
                         <div className="flex justify-between items-center">
                             <h2 className="text-lg font-semibold mb-4">История запросов</h2>
@@ -246,7 +246,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectChat, onAddNewQuery }) => {
                             ))}
                         </ul>
                         <button 
-                            className="mt-4 p-2 bg-gray-100 rounded-md text-center w-full"
+                            className="mt-1 p-2 bg-gray-100 rounded-md text-center w-full"
                             onClick={handleLoginRedirect}
                             disabled={!!username}
                         >

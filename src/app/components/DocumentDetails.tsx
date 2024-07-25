@@ -13,7 +13,7 @@ const DocumentDetails: React.FC<DocumentDetailsProps> = ({ pageContent, source }
     };
 
     return (
-        <div className="bg-gray-200 text-black shadow-md rounded-md p-6 mt-4 mx-auto max-w-4xl">
+        <div className="bg-gray-200 text-black shadow-md rounded-md p-6 mt-4 max-w-4xl w-full">
             <h3 className="text-lg font-semibold mb-2">Документы:</h3>
             <button
                 onClick={handleToggle}
