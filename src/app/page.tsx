@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
+import { Analytics } from "@vercel/analytics/react"
 
 
 export default function Home() {
@@ -41,7 +42,7 @@ export default function Home() {
   }, [message]);
   return (
     <div className="flex flex-col min-h-[100dvh]">
-      {/* <Register /> */}
+      <GoogleAnalytics gaId="G-XYZ" />
       <main className="flex-1">
       <section className="w-full py-12 md:py-12 lg:py-16 xl:py-24 bg-gradient-to-br from-[#ffffff] to-[#f1f1f1]">
         <div className="container px-4 md:px-6">
