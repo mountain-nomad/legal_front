@@ -210,7 +210,7 @@ const Chat: React.FC<ChatProps> = ({ selectedChat, onNewQuery }) => {
     };
 
     return (
-        <div className="flex flex-col items-center min-h-screen bg-white-100 p-4 pt-6 w-full">
+        <div className="flex flex-col items-center min-h-screen bg-white-100 p-4 pt-4 w-full">
             <div className="w-full max-w-full bg-gray-200 shadow-md rounded-md p-4 mb-2 flex-grow">
                 <div className="flex flex-col space-y-2 h-full">
                     {selectedChat ? (
