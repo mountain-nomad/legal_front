@@ -56,9 +56,17 @@ interface ChatResponse {
     source: string;
 }
 
+interface ChatMessage {
+    text: string;
+    sender: 'user' | 'bot';
+    time: string;
+    page_content?: string;
+    source?: string;
+}
+
 interface ChatItem {
     title: string;
-    messages: Array<{ text: string; sender: 'user' | 'bot'; time: string; page_content?: string; source?: string }>;
+    messages: ChatMessage[];
     time: string;
 }
 
@@ -118,7 +126,7 @@ const Chat: React.FC<{ selectedChat: ChatItem | null; onNewQuery: () => void }> 
         try {
             const result = await fetchDataWithRetry('https://legalapi-production.up.railway.app/get_response_constitution', { query });
 
-            if (result && result.response && result.response.result && result.response.page_content && result.response.source) {
+            if (result && result.response) {
                 const messageTime = new Date().toISOString();
                 setChatHistory([...chatHistory, { query, response: result.response, time: messageTime }]);
                 setQuery('');
@@ -160,9 +168,9 @@ const Chat: React.FC<{ selectedChat: ChatItem | null; onNewQuery: () => void }> 
     }, [query]);
 
     return (
-        <div className="flex flex-col items-center min-h-screen bg-white-100 p-4 pt-4 w-full">
-            <div className="w-full max-w-3xl bg-gray-200 shadow-md rounded-md p-4 mb-2 flex-grow">
-                <div className="flex flex-col space-y-2 h-full justify-end"> {/* Added h-full and justify-end to push content to the bottom */}
+        <div className="flex flex-col items-center min-h-screen bg-white-100 p-4 pt-16 w-full">
+            <div className="w-full max-w-full bg-gray-200 shadow-md rounded-md p-4 mb-2 flex-grow">
+                <div className="flex flex-col space-y-2 h-full">
                     {selectedChat ? (
                         <>
                             {selectedChat.messages.map((message, index) => (
@@ -206,7 +214,7 @@ const Chat: React.FC<{ selectedChat: ChatItem | null; onNewQuery: () => void }> 
                     {isLoading && <LoadingMessages />}
                 </div>
             </div>
-            <form onSubmit={handleSubmit} className="w-full max-w-3xl p-2 bg-gray-300 shadow-md rounded-md flex items-center">
+            <form onSubmit={handleSubmit} className="w-full max-w-full p-2 bg-gray-300 shadow-md rounded-md flex items-center">
                 <textarea
                     ref={textareaRef}
                     value={query}
