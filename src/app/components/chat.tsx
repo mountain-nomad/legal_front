@@ -187,13 +187,13 @@ const Chat: React.FC<ChatProps> = ({ selectedChat, onNewQuery }) => {
                 setIsRecording(true);
             };
 
-            recognition.onresult = (event: SpeechRecognitionEvent) => {
+            recognition.onresult = (event: any) => {
                 const transcript = event.results[0][0].transcript;
                 setQuery(transcript);
                 setIsRecording(false);
             };
 
-            recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
+            recognition.onerror = (event: any) => {
                 console.error('Speech recognition error:', event);
                 setIsRecording(false);
             };
