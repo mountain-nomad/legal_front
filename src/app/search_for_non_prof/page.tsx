@@ -1,14 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import Chat from "../components/chat";
+import Chat, { ChatItem } from "../components/chat";
 import Sidebar from "../components/Sidebar"; // Import the Sidebar component
-
-interface ChatItem {
-    title: string;
-    messages: Array<{ text: string, sender: string, time: string, page_content?: string, source?: string }>;
-    time: string;
-}
 
 export default function Component() {
     const [selectedChat, setSelectedChat] = useState<ChatItem | null>(null);
@@ -22,7 +16,7 @@ export default function Component() {
     };
 
     return (
-        <div className=" flex flex-col min-h-screen bg-gray-100 pt-12 md:flex-row"> 
+        <div className="flex flex-col min-h-screen bg-gray-100 pt-12 md:flex-row"> 
             <Sidebar onSelectChat={handleSelectChat} onAddNewQuery={handleAddNewQuery} /> 
             <div className="flex flex-col items-center justify-center w-full ml-0 md:ml-64 mt-8 md:mt-0"> 
                 <div className="max-w-6xl w-full px-4 sm:px-6 lg:px-8 flex flex-col flex-grow">

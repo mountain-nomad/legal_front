@@ -56,7 +56,7 @@ interface ChatResponse {
     source: string;
 }
 
-interface ChatMessage {
+export interface ChatMessage {
     text: string;
     sender: 'user' | 'bot';
     time: string;
@@ -64,7 +64,7 @@ interface ChatMessage {
     source?: string;
 }
 
-interface ChatItem {
+export interface ChatItem {
     title: string;
     messages: ChatMessage[];
     time: string;
