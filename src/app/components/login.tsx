@@ -29,7 +29,7 @@ const Login = () => {
         localStorage.setItem('access_token', response.data.access_token);
         localStorage.setItem('refresh_token', response.data.refresh_token);
         setTimeout(() => {
-          router.push("/search_for_non_prof");
+          router.push("/ask");
         }, 2000); // Redirect to /search_for_non_prof after 2 seconds
       }
     } catch (err) {
