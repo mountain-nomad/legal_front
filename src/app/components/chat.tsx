@@ -54,6 +54,9 @@ interface ChatResponse {
     result: string;
     page_content: string;
     source: string;
+    precedent?: string;
+    precedent_page_content?: string;
+    precedent_source?: string;
 }
 
 export interface ChatMessage {
@@ -62,6 +65,9 @@ export interface ChatMessage {
     time: string;
     page_content?: string;
     source?: string;
+    precedent?: string;
+    precedent_page_content?: string;
+    precedent_source?: string;
 }
 
 export interface ChatItem {
@@ -248,6 +254,19 @@ const Chat: React.FC<ChatProps> = ({ selectedChat, onNewQuery }) => {
                                             />
                                         </div>
                                     )}
+                                    {entry.response.precedent && (
+                                        <>
+                                            <ChatBubble type="bot" message={`Прецедент: ${entry.response.precedent}`} />
+                                            {entry.response.precedent_page_content && entry.response.precedent_source && (
+                                                <div className="self-start w-full text-left">
+                                                    <DocumentDetails
+                                                        pageContent={entry.response.precedent_page_content}
+                                                        source={entry.response.precedent_source}
+                                                    />
+                                                </div>
+                                            )}
+                                        </>
+                                    )}
                                     <p className="text-xs text-gray-500">{new Date(entry.time).toLocaleString()}</p>
                                 </div>
                             ))}
@@ -266,7 +285,7 @@ const Chat: React.FC<ChatProps> = ({ selectedChat, onNewQuery }) => {
                     ref={textareaRef}
                     value={query}
                     onChange={handleTextareaChange}
-                    placeholder="Как смягчить наказание за убийство?"
+                    placeholder="Что мне грозит за драку на улице?"
                     className="flex-grow p-2 bg-transparent text-black placeholder-gray-600 border-none focus:outline-none resize-none overflow-hidden"
                     rows={1}
                 />
